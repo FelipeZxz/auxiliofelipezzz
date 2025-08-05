@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <html lang="pt-br">
+<html lang="pt-br">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PAINEL IOS & ANDROID">
@@ -265,14 +265,20 @@
       const userAgent = navigator.userAgent.toLowerCase();
 
       if (userAgent.indexOf('android') > -1) {
+        // Tenta abrir diretamente o Free Fire no Android
         window.location.href = "freefire://";
+        
+        // Atraso para garantir que o app seja aberto
         setTimeout(function() {
-          window.location.href = "id=com.dts.freefireth";
+          window.location.href = "freefire://";
         }, 500);
       } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+        // Tenta abrir diretamente o Free Fire no iOS
         window.location.href = "freefire://";
+        
+        // Atraso para tentar abrir o app
         setTimeout(function() {
-          window.location.href = "";
+          window.location.href = "freefire://";
         }, 500);
       } else {
         alert("Este dispositivo não é compatível com o Free Fire.");
