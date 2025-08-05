@@ -1,1 +1,273 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Painel de Mira</title><style>body{margin:0;background-color:#000;overflow:hidden}.crosshair{position:absolute;top:50%;left:50%;width:20px;height:20px;transform:translate(-50%,-50%);z-index:1000}.crosshair::before,.crosshair::after{content:"";position:absolute;background-color:red}.crosshair::before{width:2px;height:100%;left:50%;transform:translateX(-50%)}.crosshair::after{width:100%;height:2px;top:50%;transform:translateY(-50%)}</style></head><body><div class="crosshair"></div></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAINEL IOS & ANDROID</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background: #000;
+      overflow: hidden;
+      color: #fff;
+      font-size: 16px; /* Tamanho de fonte para melhorar a legibilidade */
+    }
+
+    .bolinhas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bolinha {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: cair 5s linear infinite;
+    }
+
+    @keyframes cair {
+      0% { transform: translateY(-10px); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .painel {
+      position: relative;
+      z-index: 1;
+      background: #111;
+      border: 1px solid #444;
+      padding: 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 350px;
+      margin: 60px auto;
+      box-shadow: 0 0 15px #fff1;
+    }
+
+    .painel img {
+      display: block;
+      margin: 0 auto 10px;
+      max-width: 100px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: white;
+    }
+
+    .accordion {
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      width: 100%;
+      text-align: left;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .accordion:hover {
+      background-color: #575757;
+    }
+
+    .accordion:before {
+      content: "▶"; /* Seta para a direita */
+      font-size: 22px;
+      color: white;
+      margin-right: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .active-accordion:before {
+      content: "▼"; /* Seta para baixo */
+      transform: rotate(90deg);
+    }
+
+    .panel {
+      padding: 10px;
+      background-color: #222;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .active-panel {
+      display: block;
+    }
+
+    .accordion-text {
+      text-align: center;
+      width: 100%;
+    }
+
+    .status-ativado {
+      color: limegreen;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    /* Estilo do botão de abrir o Free Fire */
+    #abrirFreeFire {
+      display: none;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    #abrirFreeFire:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="bolinhas"></div>
+
+  <div class="painel">
+    <h1>PAINEL IOS & ANDROID</h1>
+
+    <button class="accordion">
+      <span class="accordion-text">Sistema Avançado</span>
+    </button>
+    <div class="panel">
+      <div><input type="checkbox" id="fps" /><label for="fps">120 FPS</label></div>
+      <div><input type="checkbox" id="noRecoil" /><label for="noRecoil">No Recoil</label></div>
+    </div>
+
+    <button class="accordion">
+      <span class="accordion-text">Nova Seção</span>
+    </button>
+    <div class="panel">
+      <div><input type="checkbox" id="novaOpcao1" /><label for="novaOpcao1">Aimbot 90%</label></div>
+      <div><input type="checkbox" id="novaOpcao2" /><label for="novaOpcao2">Head Trick</label></div>
+      <div><input type="checkbox" id="novaOpcao3" /><label for="novaOpcao3">Neural Aim</label></div>
+    </div>
+
+    <div id="statusContainer"></div> <!-- Área para mostrar os status -->
+    
+    <!-- Botão para abrir o Free Fire -->
+    <button id="abrirFreeFire" onclick="abrirFreeFire()">Abrir Free Fire</button>
+  </div>
+
+  <script>
+    // Função para gerar as bolinhas
+    function gerarBolinhas() {
+      const container = document.querySelector('.bolinhas');
+      for (let i = 0; i < 80; i++) {
+        const b = document.createElement('div');
+        b.classList.add('bolinha');
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDuration = (3 + Math.random() * 5) + 's';
+        b.style.opacity = Math.random();
+        container.appendChild(b);
+      }
+    }
+
+    // Função para ativar os listeners dos checkboxes e accordion
+    function ativarListeners() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(box => {
+        box.addEventListener('change', () => {
+          atualizarStatus(); // Atualiza o status sempre que uma opção é alterada
+          verificarSeMostrarBotao(); // Verifica se todos estão ativados
+        });
+      });
+
+      // Accordion
+      const acc = document.querySelectorAll('.accordion');
+      acc.forEach((item) => {
+        item.addEventListener('click', function() {
+          this.classList.toggle('active-accordion');
+          const panel = this.nextElementSibling;
+          if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+          } else {
+            panel.style.display = 'block';
+          }
+        });
+      });
+    }
+
+    // Função para atualizar o status das opções selecionadas
+    function atualizarStatus() {
+      let statusText = ''; // Texto do status que será exibido
+
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      checkboxes.forEach((checkbox) => {
+        const label = checkbox.nextElementSibling.textContent;
+        statusText += `<div class="status-ativado">Ativado: ${label}</div>`;
+      });
+
+      statusContainer.innerHTML = statusText; // Atualiza a área de status
+    }
+
+    // Verifica se todos os checkboxes estão ativados
+    function verificarSeMostrarBotao() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const totalCheckboxes = checkboxes.length;
+      const totalAtivados = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+      // Se todos os checkboxes estiverem ativados, exibe o botão para abrir o Free Fire
+      if (totalCheckboxes === totalAtivados) {
+        document.getElementById('abrirFreeFire').style.display = 'block';
+      } else {
+        document.getElementById('abrirFreeFire').style.display = 'none';
+      }
+    }
+
+    // Função para abrir o Free Fire
+    function abrirFreeFire() {
+      const userAgent = navigator.userAgent.toLowerCase();
+
+      if (userAgent.indexOf('android') > -1) {
+        // Android
+        window.location.href = "freefire://"; // Tenta abrir o aplicativo
+        setTimeout(function() {
+          window.location.href = "https://play.google.com/store/apps/details?id=com.dts.freefireth"; // Se o app não estiver instalado, redireciona para a Play Store
+        }, 500);
+      } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+        // iOS
+        window.location.href = "freefire://"; // Tenta abrir o aplicativo
+        setTimeout(function() {
+          window.location.href = "https://apps.apple.com/br/app/free-fire-x-naruto-shippuden/id1300146617"; // Se o app não estiver instalado, redireciona para a App Store
+        }, 500);
+      } else {
+        alert("Este dispositivo não é compatível com o Free Fire.");
+      }
+    }
+
+    // Chama a função para gerar as bolinhas e ativa os listeners
+    gerarBolinhas();
+    ativarListeners();
+  </script>
+</body>
+</html>
