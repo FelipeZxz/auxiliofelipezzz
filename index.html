@@ -1,9 +1,35 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+  <html lang="pt-br">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PAINEL IOS & ANDROID">
+
 <head>
+  <!-- Meta Tags e Manifesto -->
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Definições de Caracteres e Viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Meta Tags específicas para o comportamento em iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Habilita o modo tela cheia -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Barra de status transparente -->
+  <meta name="apple-mobile-web-app-title" content="PAINEL IOS & ANDROID"> <!-- Nome do App quando adicionado à tela inicial -->
+
+  <!-- Meta Tags para o Android -->
+  <meta name="mobile-web-app-capable" content="yes"> <!-- Permite o site como app no Android -->
+  <meta name="theme-color" content="#111"> <!-- Cor da barra de status -->
+  <meta name="msapplication-TileColor" content="#111"> <!-- Cor da Tile do Windows -->
+  <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png"> <!-- Imagem da Tile do Windows -->
+
+  <!-- Título da página -->
   <title>PAINEL IOS & ANDROID</title>
+
+  <!-- Link para o Manifesto (se necessário para PWA) -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Estilos CSS -->
   <style>
     * {
       margin: 0;
@@ -16,7 +42,7 @@
       background: #000;
       overflow: hidden;
       color: #fff;
-      font-size: 16px; /* Tamanho de fonte para melhorar a legibilidade */
+      font-size: 16px;
     }
 
     .bolinhas {
@@ -93,7 +119,7 @@
     }
 
     .accordion:before {
-      content: "▶"; /* Seta para a direita */
+      content: "▶";
       font-size: 22px;
       color: white;
       margin-right: 10px;
@@ -101,7 +127,7 @@
     }
 
     .active-accordion:before {
-      content: "▼"; /* Seta para baixo */
+      content: "▼";
       transform: rotate(90deg);
     }
 
@@ -128,7 +154,6 @@
       margin-top: 2px;
     }
 
-    /* Estilo do botão de abrir o Free Fire */
     #abrirFreeFire {
       display: none;
       background-color: #28a745;
@@ -172,14 +197,12 @@
       <div><input type="checkbox" id="novaOpcao3" /><label for="novaOpcao3">Neural Aim</label></div>
     </div>
 
-    <div id="statusContainer"></div> <!-- Área para mostrar os status -->
-    
-    <!-- Botão para abrir o Free Fire -->
+    <div id="statusContainer"></div>
+
     <button id="abrirFreeFire" onclick="abrirFreeFire()">Abrir Free Fire</button>
   </div>
 
   <script>
-    // Função para gerar as bolinhas
     function gerarBolinhas() {
       const container = document.querySelector('.bolinhas');
       for (let i = 0; i < 80; i++) {
@@ -192,17 +215,15 @@
       }
     }
 
-    // Função para ativar os listeners dos checkboxes e accordion
     function ativarListeners() {
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach(box => {
         box.addEventListener('change', () => {
-          atualizarStatus(); // Atualiza o status sempre que uma opção é alterada
-          verificarSeMostrarBotao(); // Verifica se todos estão ativados
+          atualizarStatus();
+          verificarSeMostrarBotao();
         });
       });
 
-      // Accordion
       const acc = document.querySelectorAll('.accordion');
       acc.forEach((item) => {
         item.addEventListener('click', function() {
@@ -217,26 +238,22 @@
       });
     }
 
-    // Função para atualizar o status das opções selecionadas
     function atualizarStatus() {
-      let statusText = ''; // Texto do status que será exibido
-
+      let statusText = '';
       const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
       checkboxes.forEach((checkbox) => {
         const label = checkbox.nextElementSibling.textContent;
         statusText += `<div class="status-ativado">Ativado: ${label}</div>`;
       });
 
-      statusContainer.innerHTML = statusText; // Atualiza a área de status
+      statusContainer.innerHTML = statusText;
     }
 
-    // Verifica se todos os checkboxes estão ativados
     function verificarSeMostrarBotao() {
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       const totalCheckboxes = checkboxes.length;
       const totalAtivados = document.querySelectorAll('input[type="checkbox"]:checked').length;
 
-      // Se todos os checkboxes estiverem ativados, exibe o botão para abrir o Free Fire
       if (totalCheckboxes === totalAtivados) {
         document.getElementById('abrirFreeFire').style.display = 'block';
       } else {
@@ -244,28 +261,24 @@
       }
     }
 
-    // Função para abrir o Free Fire
     function abrirFreeFire() {
       const userAgent = navigator.userAgent.toLowerCase();
 
       if (userAgent.indexOf('android') > -1) {
-        // Android
-        window.location.href = "freefire://"; // Tenta abrir o aplicativo
+        window.location.href = "freefire://";
         setTimeout(function() {
-          window.location.href = "https://play.google.com/store/apps/details?id=com.dts.freefireth"; // Se o app não estiver instalado, redireciona para a Play Store
+          window.location.href = "https://play.google.com/store/apps/details?id=com.dts.freefireth";
         }, 500);
       } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-        // iOS
-        window.location.href = "freefire://"; // Tenta abrir o aplicativo
+        window.location.href = "freefire://";
         setTimeout(function() {
-          window.location.href = "https://apps.apple.com/br/app/free-fire-x-naruto-shippuden/id1300146617"; // Se o app não estiver instalado, redireciona para a App Store
+          window.location.href = "https://apps.apple.com/br/app/free-fire-x-naruto-shippuden/id1300146617";
         }, 500);
       } else {
         alert("Este dispositivo não é compatível com o Free Fire.");
       }
     }
 
-    // Chama a função para gerar as bolinhas e ativa os listeners
     gerarBolinhas();
     ativarListeners();
   </script>
